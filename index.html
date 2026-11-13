@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102b27"><title>Sopa de Números 5.4</title><style>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#102b27"><title>Sopa de Números 5.5</title><style>
 :root{color-scheme:dark;--bg:#091a1a;--panel:#12312d;--text:#f0f8f2;--muted:#afc9be;--gold:#f3ca74;--green:#69d8aa;--red:#ff8b8b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#225344 0%,var(--bg) 55%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100dvh}main{max-width:550px;margin:auto;padding:18px 13px 34px}h1{font-size:1.55rem;margin:0}small,.muted{color:var(--muted)}header{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:14px}.tag{border:1px solid #4e8471;border-radius:100px;padding:7px 11px;color:var(--gold);font-size:.8rem;font-weight:700;background:#173d33}.card{background:linear-gradient(145deg,var(--panel),#102723);border:1px solid #2f5c50;border-radius:18px;padding:14px;margin:11px 0;box-shadow:0 10px 26px #0003}.levels,.modes{display:grid;gap:7px;margin-top:9px}.levels{grid-template-columns:repeat(2,1fr)}.modes{grid-template-columns:repeat(2,1fr)}button{font:inherit;cursor:pointer;border:0;color:var(--text);touch-action:manipulation}.choice{background:#24483e;border:1px solid #477565;border-radius:11px;padding:10px 5px;font-weight:700;font-size:.86rem}.choice span{display:block;font-size:.72rem;font-weight:400;color:var(--muted);margin-top:3px}.choice.active{background:#356d54;border-color:var(--green)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{text-align:center;padding:9px 2px;background:#163b33;border-radius:11px}.stat strong{display:block;font-size:1.2rem;color:var(--gold)}.stat span{font-size:.7rem;color:var(--muted)}.operation{text-align:center}.operation .label{font-size:.82rem;color:var(--muted)}#problem{font-size:clamp(2rem,9vw,3rem);font-weight:800;margin:8px 0;color:var(--gold)}#answer{font-size:1.07rem;min-height:26px}#board{display:grid;gap:6px;margin:13px auto;max-width:510px}.cell{aspect-ratio:1;background:linear-gradient(145deg,#245348,#183a33);border:1px solid #47776a;border-radius:10px;font-size:clamp(1.1rem,5.3vw,1.85rem);font-weight:750;display:flex;align-items:center;justify-content:center;min-width:0;transition:background .13s,transform .13s}.cell:active{transform:scale(.95)}.cell.selected{background:#a77e34;border-color:#ffdf91}.cell.hint{outline:3px solid var(--gold);outline-offset:-3px}.cell.empty{visibility:hidden;pointer-events:none}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.action{padding:12px 4px;border-radius:11px;background:#2c5b4b;font-weight:700;font-size:.84rem}.action.primary{background:#d1aa5c;color:#1d241c}.action:disabled{opacity:.45}#message{min-height:34px;text-align:center;color:var(--muted);font-size:.9rem;margin:11px 0}.footer{text-align:center;color:var(--muted);font-size:.76rem;margin-top:14px}.win{color:var(--green)!important;font-weight:800}.error{color:var(--red)!important}.settings{display:flex;align-items:center;justify-content:space-between;gap:12px}.sound{white-space:nowrap}.hidden{display:none!important}@media(max-width:380px){main{padding:12px 9px}.card{padding:11px}#board{gap:4px}.cell{border-radius:7px}.tag{font-size:.7rem}}
 
 .progress-wrap{height:10px;background:#09251f;border-radius:20px;overflow:hidden;margin:10px 0 4px}.progress-fill{height:100%;background:linear-gradient(90deg,#54c99c,#f3ca74);width:0%;transition:width .2s}.progress-info{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem}.extra-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.info{font-size:.85rem;line-height:1.5;color:var(--muted)}.info strong{color:var(--gold)}.info-panel{padding:10px 12px;background:#102b27;border:1px solid #32634f;border-radius:12px;margin-top:10px}.action:focus-visible,.cell:focus-visible,.choice:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.cell:disabled:not(.empty){opacity:.5}
@@ -58,9 +58,101 @@ function makeOperation(value){
  // Hay al menos una suma válida para resultados de una, dos o tres cifras.
  return opts[rnd(0,opts.length-1)]+' = ?';
 }
-function stopTimer(){if(timer!==null){clearInterval(timer);timer=null}if(elapsedTimer!==null){clearInterval(elapsedTimer);elapsedTimer=null}}function newGame(){stopTimer();paused=false;elapsed=0;$('pause').textContent='⏸ Pausar';rand=mode==='daily'?randomSeed(hash(dayKey()+level)):Math.random;let cfg=configs[level],total=cfg.rows*cfg.cols,path=mixedPath(cfg.rows,cfg.cols),sizes=shuffle([...cfg.sizes]);if(sizes.reduce((a,b)=>a+b,0)!==total)throw Error('Configuración incorrecta');let cells=Array(total).fill(null),groups=[],pos=0,usedValues=new Set();for(let size of sizes){let low=size===1?2:size===2?10:100,high=size===1?9:size===2?99:999;if(level==='kids'&&size===2)high=18;let value;do{value=rnd(low,high)}while(usedValues.has(value));usedValues.add(value);let indices=path.slice(pos,pos+size);pos+=size;[...String(value)].forEach((digit,i)=>cells[indices[i]]=digit);groups.push({indices,value,op:makeOperation(value)})}shuffle(groups);game={cells,groups,groupIndex:0,score:0,finished:false,won:false,seconds:cfg.seconds,lives:3,streak:0,errors:0,hints:0};selection=[];hinted=[];render();message(mode==='daily'?'Desafío del '+dayKey()+'. ¡Adelante!':'Selecciona los dígitos en orden.');elapsedTimer=setInterval(()=>{if(game&&!game.finished&&!paused)elapsed++},1000);if(mode==='timed'){timer=setInterval(()=>{if(!game||game.finished||paused)return;game.seconds--;updateStats();if(game.seconds<=0)endGame(false,'⏰ Se acabó el tiempo. ¡Inténtalo de nuevo!')},1000)}}
+// Cuenta recorridos distintos que forman una respuesta en las casillas disponibles.
+// Se detiene en dos: sólo interesa comprobar que haya exactamente uno.
+function countRoutes(cells, value, cols){
+ const digits=String(value),rows=cells.length/cols;
+ let count=0,only=null;
+ function walk(pos,depth,used,path){
+   if(count>=2)return;
+   if(depth===digits.length){count++;only=path.slice();return}
+   let r=Math.floor(pos/cols),c=pos%cols;
+   for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+     if(!dr&&!dc)continue;
+     let nr=r+dr,nc=c+dc;
+     if(nr<0||nr>=rows||nc<0||nc>=cols)continue;
+     let next=nr*cols+nc;
+     if(!used.has(next)&&cells[next]===digits[depth]){
+       used.add(next);path.push(next);walk(next,depth+1,used,path);
+       path.pop();used.delete(next);
+       if(count>=2)return;
+     }
+   }
+ }
+ for(let i=0;i<cells.length&&count<2;i++)if(cells[i]===digits[0]){
+   walk(i,1,new Set([i]),[i]);
+ }
+ return {count,path:only};
+}
+// Busca un orden de eliminación donde CADA respuesta sea única en ese momento.
+function uniqueOrder(cells,groups,cols){
+ const active=cells.slice(),remaining=groups.map((_,i)=>i),ordered=[];
+ function solve(){
+   if(!remaining.length)return true;
+   const candidates=shuffle(remaining.filter(i=>{
+     const result=countRoutes(active,groups[i].value,cols);
+     return result.count===1 && result.path.every((p,k)=>p===groups[i].indices[k]);
+   }));
+   for(const i of candidates){
+     const index=remaining.indexOf(i);remaining.splice(index,1);
+     groups[i].indices.forEach(p=>active[p]=null);ordered.push(groups[i]);
+     if(solve())return true;
+     ordered.pop();groups[i].indices.forEach((p,k)=>active[p]=String(groups[i].value)[k]);
+     remaining.splice(index,0,i);
+   }
+   return false;
+ }
+ return solve()?ordered:null;
+}
+function buildBoard(cfg){
+ const total=cfg.rows*cfg.cols;
+ if(cfg.sizes.reduce((a,b)=>a+b,0)!==total)throw Error('Configuración incorrecta');
+ // Construcción inversa: cada grupo se agrega sólo si su resultado tiene
+ // exactamente un recorrido en el tablero parcial. Luego se juega al revés.
+ for(let attempt=0;attempt<500;attempt++){
+   const path=mixedPath(cfg.rows,cfg.cols),sizes=shuffle([...cfg.sizes]);
+   const cells=Array(total).fill(null),groups=[],usedValues=new Set();
+   let pos=0,segments=[];
+   for(const size of sizes){segments.push(path.slice(pos,pos+size));pos+=size}
+   let valid=true;
+   for(const indices of segments){
+     const size=indices.length;
+     const low=size===1?2:size===2?10:100;
+     const high=level==='kids'&&size===2?18:size===1?9:size===2?99:999;
+     const values=shuffle(Array.from({length:high-low+1},(_,i)=>i+low));
+     let chosen=null;
+     for(const value of values){
+       if(usedValues.has(value))continue;
+       const digits=String(value);
+       digits.split('').forEach((digit,i)=>cells[indices[i]]=digit);
+       const found=countRoutes(cells,value,cfg.cols);
+       if(found.count===1&&found.path.every((p,k)=>p===indices[k])){
+         chosen=value;break;
+       }
+       indices.forEach(p=>cells[p]=null);
+     }
+     if(chosen===null){valid=false;break}
+     usedValues.add(chosen);
+     groups.push({indices,value:chosen,op:makeOperation(chosen)});
+   }
+   if(valid)return {cells,groups:groups.reverse()};
+ }
+ throw Error('No fue posible generar un tablero sin respuestas ambiguas. Intenta otra partida.');
+}
+function stopTimer(){if(timer!==null){clearInterval(timer);timer=null}if(elapsedTimer!==null){clearInterval(elapsedTimer);elapsedTimer=null}}
+function newGame(){
+ stopTimer();paused=false;elapsed=0;$('pause').textContent='⏸ Pausar';
+ rand=mode==='daily'?randomSeed(hash(dayKey()+level)):Math.random;
+ const cfg=configs[level];let board;
+ try{board=buildBoard(cfg)}catch(err){message(err.message,'error');return}
+ game={cells:board.cells,groups:board.groups,groupIndex:0,score:0,finished:false,won:false,seconds:cfg.seconds,lives:3,streak:0,errors:0,hints:0};
+ selection=[];hinted=[];render();
+ message(mode==='daily'?'Desafío del '+dayKey()+'. ¡Adelante!':'Cada respuesta aparece en un único recorrido.');
+ elapsedTimer=setInterval(()=>{if(game&&!game.finished&&!paused)elapsed++},1000);
+ if(mode==='timed')timer=setInterval(()=>{if(!game||game.finished||paused)return;game.seconds--;updateStats();if(game.seconds<=0)endGame(false,'⏰ Se acabó el tiempo. ¡Inténtalo de nuevo!')},1000);
+}
 function adjacent(a,b){let c=configs[level].cols;return a!==b&&Math.abs(Math.floor(a/c)-Math.floor(b/c))<=1&&Math.abs(a%c-b%c)<=1}function endGame(won,msg){game.finished=true;paused=false;$('pause').textContent='⏸ Pausar';game.won=won;stopTimer();if(won){game.score+=200;saveStats();if(game.score>getRecord())saveRecord(game.score);play('win')}message(msg,won?'win':'error');render()}
-function select(i){if(game.finished||paused||game.cells[i]===null)return;if(selection.includes(i)){if(selection[selection.length-1]===i){selection.pop();render()}return}if(selection.length&&!adjacent(selection[selection.length-1],i)){message('Selecciona una casilla vecina.','error');return}let target=game.groups[game.groupIndex];if(selection.length>=target.indices.length)return;selection.push(i);hinted=[];render();if(selection.length===target.indices.length){let value=Number(selection.map(j=>game.cells[j]).join(''));if(value===target.value&&selection.length===target.indices.length&&selection.every((j,k)=>j===target.indices[k])){selection.forEach(j=>game.cells[j]=null);game.streak++;game.score+=(target.indices.length===3?150:100)+Math.min(50,(game.streak-1)*10);game.groupIndex++;selection=[];if(game.groupIndex===game.groups.length)endGame(true,'🏆 ¡Tablero completo! Bono de 200 puntos.');else{play();message('✓ ¡Correcto! Continúa con la siguiente operación.','win');render()}}else{game.score=Math.max(0,game.score-15);game.errors++;game.streak=0;selection=[];if(mode==='survival'){game.lives--;if(game.lives<=0){endGame(false,'💔 Te quedaste sin vidas. ¡Vuelve a intentarlo!');return}}message(mode==='survival'?'Respuesta incorrecta: pierdes una vida.':'Respuesta incorrecta o casillas distintas de la solución (−15 puntos).','error');render()}}}
+function select(i){if(game.finished||paused||game.cells[i]===null)return;if(selection.includes(i)){if(selection[selection.length-1]===i){selection.pop();render()}return}if(selection.length&&!adjacent(selection[selection.length-1],i)){message('Selecciona una casilla vecina.','error');return}let target=game.groups[game.groupIndex];if(selection.length>=target.indices.length)return;selection.push(i);hinted=[];render();if(selection.length===target.indices.length){let value=Number(selection.map(j=>game.cells[j]).join(''));if(value===target.value){selection.forEach(j=>game.cells[j]=null);game.streak++;game.score+=(target.indices.length===3?150:100)+Math.min(50,(game.streak-1)*10);game.groupIndex++;selection=[];if(game.groupIndex===game.groups.length)endGame(true,'🏆 ¡Tablero completo! Bono de 200 puntos.');else{play();message('✓ ¡Correcto! Continúa con la siguiente operación.','win');render()}}else{game.score=Math.max(0,game.score-15);game.errors++;game.streak=0;selection=[];if(mode==='survival'){game.lives--;if(game.lives<=0){endGame(false,'💔 Te quedaste sin vidas. ¡Vuelve a intentarlo!');return}}message(mode==='survival'?'Respuesta incorrecta: pierdes una vida.':'Respuesta incorrecta (−15 puntos).','error');render()}}}
 function saveStats(){try{let k='sopa-v5-stats-'+level+'-'+mode;let st=JSON.parse(localStorage.getItem(k)||'{"wins":0,"bestSeconds":null}');st.wins=(st.wins||0)+1;st.bestSeconds=st.bestSeconds==null?elapsed:Math.min(st.bestSeconds,elapsed);localStorage.setItem(k,JSON.stringify(st))}catch{}}
 function statsText(){try{let st=JSON.parse(localStorage.getItem('sopa-v5-stats-'+level+'-'+mode)||'{}');return `Partidas completadas: ${st.wins||0}. Mejor tiempo: ${st.bestSeconds==null?'—':Math.floor(st.bestSeconds/60)+'m '+st.bestSeconds%60+'s'}.` }catch{return 'Las estadísticas se guardan en este navegador.'}}
 function message(s,cls=''){$('message').textContent=s;$('message').className=cls}function updateStats(){$('score').textContent=game.score;$('remaining').textContent=game.cells.filter(v=>v!==null).length;$('record').textContent=getRecord();$('extra-label').textContent=mode==='timed'?'Tiempo':mode==='survival'?'Vidas':mode==='daily'?'Modo':'Tiempo';$('extra').textContent=mode==='timed'?`${Math.floor(game.seconds/60)}:${String(game.seconds%60).padStart(2,'0')}`:mode==='survival'?'❤️'.repeat(game.lives):mode==='daily'?'📅':'∞'}
