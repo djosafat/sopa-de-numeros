@@ -2,15 +2,22 @@
 :root{color-scheme:dark;--bg:#091a1a;--panel:#12312d;--text:#f0f8f2;--muted:#afc9be;--gold:#f3ca74;--green:#69d8aa;--red:#ff8b8b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#225344 0%,var(--bg) 55%);font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text);min-height:100dvh}main{max-width:550px;margin:auto;padding:18px 13px 34px}h1{font-size:1.55rem;margin:0}small,.muted{color:var(--muted)}header{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:14px}.tag{border:1px solid #4e8471;border-radius:100px;padding:7px 11px;color:var(--gold);font-size:.8rem;font-weight:700;background:#173d33}.card{background:linear-gradient(145deg,var(--panel),#102723);border:1px solid #2f5c50;border-radius:18px;padding:14px;margin:11px 0;box-shadow:0 10px 26px #0003}.levels,.modes{display:grid;gap:7px;margin-top:9px}.levels{grid-template-columns:repeat(2,1fr)}.modes{grid-template-columns:repeat(2,1fr)}button{font:inherit;cursor:pointer;border:0;color:var(--text);touch-action:manipulation}.choice{background:#24483e;border:1px solid #477565;border-radius:11px;padding:10px 5px;font-weight:700;font-size:.86rem}.choice span{display:block;font-size:.72rem;font-weight:400;color:var(--muted);margin-top:3px}.choice.active{background:#356d54;border-color:var(--green)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{text-align:center;padding:9px 2px;background:#163b33;border-radius:11px}.stat strong{display:block;font-size:1.2rem;color:var(--gold)}.stat span{font-size:.7rem;color:var(--muted)}.operation{text-align:center}.operation .label{font-size:.82rem;color:var(--muted)}#problem{font-size:clamp(2rem,9vw,3rem);font-weight:800;margin:8px 0;color:var(--gold)}#answer{font-size:1.07rem;min-height:26px}#board{display:grid;gap:6px;margin:13px auto;max-width:510px}.cell{aspect-ratio:1;background:linear-gradient(145deg,#245348,#183a33);border:1px solid #47776a;border-radius:10px;font-size:clamp(1.1rem,5.3vw,1.85rem);font-weight:750;display:flex;align-items:center;justify-content:center;min-width:0;transition:background .13s,transform .13s}.cell:active{transform:scale(.95)}.cell.selected{background:#a77e34;border-color:#ffdf91}.cell.hint{outline:3px solid var(--gold);outline-offset:-3px}.cell.empty{visibility:hidden;pointer-events:none}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.action{padding:12px 4px;border-radius:11px;background:#2c5b4b;font-weight:700;font-size:.84rem}.action.primary{background:#d1aa5c;color:#1d241c}.action:disabled{opacity:.45}#message{min-height:34px;text-align:center;color:var(--muted);font-size:.9rem;margin:11px 0}.footer{text-align:center;color:var(--muted);font-size:.76rem;margin-top:14px}.win{color:var(--green)!important;font-weight:800}.error{color:var(--red)!important}.settings{display:flex;align-items:center;justify-content:space-between;gap:12px}.sound{white-space:nowrap}.hidden{display:none!important}@media(max-width:380px){main{padding:12px 9px}.card{padding:11px}#board{gap:4px}.cell{border-radius:7px}.tag{font-size:.7rem}}
 
 .progress-wrap{height:10px;background:#09251f;border-radius:20px;overflow:hidden;margin:10px 0 4px}.progress-fill{height:100%;background:linear-gradient(90deg,#54c99c,#f3ca74);width:0%;transition:width .2s}.progress-info{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem}.extra-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.info{font-size:.85rem;line-height:1.5;color:var(--muted)}.info strong{color:var(--gold)}.info-panel{padding:10px 12px;background:#102b27;border:1px solid #32634f;border-radius:12px;margin-top:10px}.action:focus-visible,.cell:focus-visible,.choice:focus-visible{outline:3px solid var(--gold);outline-offset:2px}.cell:disabled:not(.empty){opacity:.5}
+
+#board{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;gap:0!important;padding:6px 0;}
+.cell{border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;position:relative;z-index:1;touch-action:none;user-select:none;-webkit-user-select:none;font-size:clamp(1.35rem,6vw,2.15rem);font-weight:800;}
+.cell.selected{color:#fff4c4;text-shadow:0 0 9px #e3ad4b;transform:none!important;}
+.cell.hint{outline:none!important;color:var(--gold);text-shadow:0 0 12px #e2b75c;}
+.cell.empty{visibility:hidden}
+#trace{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible;}
 </style></head><body><main><header><div><h1>🔢 Sopa de Números</h1><small>Edición 5.0 · Rachas y estadísticas</small></div><button class="tag sound" id="sound" aria-pressed="true">🔊 Sonido</button></header>
 <section class="card"><strong>Dificultad</strong><div class="levels"><button class="choice" data-level="kids">🧒 Kids<span>3 × 3</span></button><button class="choice" data-level="veryeasy">Muy fácil<span>3 × 4</span></button><button class="choice active" data-level="easy">Fácil<span>4 × 4</span></button><button class="choice" data-level="medium">Medio<span>5 × 6</span></button><button class="choice" data-level="hard">Difícil<span>6 × 6</span></button></div><div style="margin-top:13px"><strong>Modalidad</strong></div><div class="modes"><button class="choice active" data-mode="classic">🧩 Clásico</button><button class="choice" data-mode="timed">⏱️ Contrarreloj</button><button class="choice" data-mode="survival">❤️ Supervivencia</button><button class="choice" data-mode="daily">📅 Desafío diario</button></div></section>
 <section class="stats"><div class="stat"><strong id="score">0</strong><span>Puntos</span></div><div class="stat"><strong id="remaining">16</strong><span>Casillas</span></div><div class="stat"><strong id="record">0</strong><span>Récord</span></div><div class="stat"><strong id="extra">∞</strong><span id="extra-label">Tiempo</span></div></section>
 <div class="progress-wrap" role="progressbar" aria-label="Progreso de la partida" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressbox"><div class="progress-fill" id="progress"></div></div><div class="progress-info"><span id="progress-label">0% completado</span><span id="streak">🔥 Racha: 0</span></div>
-<section class="card operation"><div class="label">Forma el resultado con casillas vecinas</div><div id="problem">…</div><div id="answer">Tu respuesta: —</div></section><div id="board" aria-label="Tablero de dígitos"></div>
-<div class="actions"><button class="action" id="clear">↶ Borrar</button><button class="action" id="hint">💡 Pista</button><button class="action primary" id="restart">↻ Nueva partida</button></div><div class="extra-actions"><button class="action" id="pause">⏸ Pausar</button><button class="action" id="help">❔ Instrucciones</button></div><div class="info-panel info hidden" id="help-panel"><strong>Cómo jugar</strong><p>Resuelve la operación y toca sus dígitos en orden. Cada nuevo dígito debe estar junto al anterior, incluso en diagonal. Las casillas correctas desaparecen. Las pistas cuestan 20 puntos.</p><p>La racha aumenta al acertar sin equivocarte y da puntos extra. En Contrarreloj puedes pausar el tiempo. En Desafío diario el tablero se mantiene durante el día.</p><p id="stats-summary"></p></div><p id="message" role="status" aria-live="polite">Selecciona los dígitos en orden.</p><div class="footer">Se permiten vecinos horizontales, verticales y diagonales.<br>El sonido se puede silenciar en cualquier momento. Funciona sin internet.</div></main>
+<section class="card operation"><div class="label">Desliza el dedo en línea recta para formar el resultado</div><div id="problem">…</div><div id="answer">Tu respuesta: —</div></section><div id="board" aria-label="Tablero de dígitos"></div>
+<div class="actions"><button class="action" id="clear">↶ Borrar</button><button class="action" id="hint">💡 Pista</button><button class="action primary" id="restart">↻ Nueva partida</button></div><div class="extra-actions"><button class="action" id="pause">⏸ Pausar</button><button class="action" id="help">❔ Instrucciones</button></div><div class="info-panel info hidden" id="help-panel"><strong>Cómo jugar</strong><p>Resuelve la operación y desliza el dedo desde el primer dígito hasta el último, en línea recta: horizontal, vertical o diagonal. Mantén el dedo sobre el tablero y suéltalo al terminar. La línea correcta permanece un segundo antes de desaparecer junto con los dígitos. Las pistas cuestan 20 puntos.</p><p>La racha aumenta al acertar sin equivocarte y da puntos extra. En Contrarreloj puedes pausar el tiempo. En Desafío diario el tablero se mantiene durante el día.</p><p id="stats-summary"></p></div><p id="message" role="status" aria-live="polite">Desliza el dedo sobre los dígitos.</p><div class="footer">Solo líneas rectas horizontales, verticales o diagonales.<br>El sonido se puede silenciar en cualquier momento. Funciona sin internet.</div></main>
 <script>
 (()=>{'use strict';const configs={kids:{rows:3,cols:3,sizes:[2,2,2,2,1],seconds:75},veryeasy:{rows:3,cols:4,sizes:Array(6).fill(2),seconds:90},easy:{rows:4,cols:4,sizes:Array(8).fill(2),seconds:120},medium:{rows:5,cols:6,sizes:[3,2,3,2,3,2,3,2,3,2,3,2],seconds:240},hard:{rows:6,cols:6,sizes:[3,3,2,3,3,2,3,3,2,3,3,2,2,2],seconds:330}};
-const $=id=>document.getElementById(id);let level='easy',mode='classic',game=null,selection=[],hinted=[],timer=null,audio=null;let soundOn=true,paused=false,elapsed=0,elapsedTimer=null;try{soundOn=localStorage.getItem('sopa-v4-sound')!=='off'}catch{};
+const $=id=>document.getElementById(id);let level='easy',mode='classic',game=null,selection=[],hinted=[],timer=null,audio=null;let soundOn=true,paused=false,elapsed=0,elapsedTimer=null,dragging=false,locked=false,dragPointer=null,gameSerial=0;try{soundOn=localStorage.getItem('sopa-v4-sound')!=='off'}catch{};
 function key(){return 'sopa-v4-record-'+mode+'-'+level}function getRecord(){try{return Number(localStorage.getItem(key()))||0}catch{return 0}}function saveRecord(n){try{localStorage.setItem(key(),String(n))}catch{}}function saveSound(){try{localStorage.setItem('sopa-v4-sound',soundOn?'on':'off')}catch{}}function updateSound(){$('sound').textContent=soundOn?'🔊 Sonido':'🔇 Silencio';$('sound').setAttribute('aria-pressed',String(soundOn))}updateSound();
 function play(kind='correct'){if(!soundOn)return;try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;if(!audio)audio=new C();if(audio.state==='suspended')audio.resume().catch(()=>{});const now=audio.currentTime,notes=kind==='win'?[523.25,659.25,783.99,1046.5]:[659.25,880];notes.forEach((freq,i)=>{let o=audio.createOscillator(),g=audio.createGain(),t=now+i*.095;o.type='sine';o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.13,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+.22);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+.24)})}catch{}}
 function randomSeed(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}let rand=Math.random;function rnd(a,b){return Math.floor(rand()*(b-a+1))+a}function shuffle(a){for(let i=a.length-1;i>0;i--){let j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -63,25 +70,21 @@ function makeOperation(value){
 function countRoutes(cells, value, cols){
  const digits=String(value),rows=cells.length/cols;
  let count=0,only=null;
- function walk(pos,depth,used,path){
-   if(count>=2)return;
-   if(depth===digits.length){count++;only=path.slice();return}
-   let r=Math.floor(pos/cols),c=pos%cols;
+ for(let i=0;i<cells.length&&count<2;i++)if(cells[i]===digits[0]){
+   const r=Math.floor(i/cols),c=i%cols;
+   if(digits.length===1){count++;only=[i];continue}
    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
      if(!dr&&!dc)continue;
-     let nr=r+dr,nc=c+dc;
-     if(nr<0||nr>=rows||nc<0||nc>=cols)continue;
-     let next=nr*cols+nc;
-     if(!used.has(next)&&cells[next]===digits[depth]){
-       used.add(next);path.push(next);walk(next,depth+1,used,path);
-       path.pop();used.delete(next);
-       if(count>=2)return;
+     const path=[];let ok=true;
+     for(let k=0;k<digits.length;k++){
+       const rr=r+dr*k,cc=c+dc*k;
+       if(rr<0||rr>=rows||cc<0||cc>=cols||cells[rr*cols+cc]!==digits[k]){ok=false;break}
+       path.push(rr*cols+cc);
      }
+     if(ok){count++;only=path;if(count>=2)break}
    }
  }
- for(let i=0;i<cells.length&&count<2;i++)if(cells[i]===digits[0]){
-   walk(i,1,new Set([i]),[i]);
- }
+
  return {count,path:only};
 }
 // Busca un orden de eliminación donde CADA respuesta sea única en ese momento.
@@ -104,16 +107,58 @@ function uniqueOrder(cells,groups,cols){
  }
  return solve()?ordered:null;
 }
+// Reparte el tablero en segmentos RECTOS disjuntos mediante búsqueda aleatoria.
+function straightSegments(cfg){
+ const rows=cfg.rows,cols=cfg.cols,total=rows*cols;
+ const sizes=[...cfg.sizes],left=Array(total).fill(true),segments=[];
+ const directions=[[0,1],[1,0],[1,1],[1,-1]];
+ const candidates={};
+ for(const size of new Set(sizes)){
+   const lines=[];
+   for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)for(const [dr,dc] of directions){
+     const path=[];
+     for(let k=0;k<size;k++){
+       let rr=r+dr*k,cc=c+dc*k;
+       if(rr<0||rr>=rows||cc<0||cc>=cols){path.length=0;break}
+       path.push(rr*cols+cc);
+     }
+     if(path.length===size){lines.push(path);if(size>1)lines.push([...path].reverse())}
+   }
+   candidates[size]=lines;
+ }
+ let nodes=0;
+ function fill(remaining){
+   if(!remaining.length)return true;
+   if(++nodes>35000)return false;
+   let best=null,opts=null;
+   for(let i=0;i<total;i++)if(left[i]){
+     const possible=[];
+     for(const size of new Set(remaining))for(const path of candidates[size]){
+       if(path.includes(i)&&path.every(j=>left[j]))possible.push({size,path});
+     }
+     if(!possible.length)return false;
+     if(!opts||possible.length<opts.length){opts=possible;best=i}
+     if(opts.length<=2)break;
+   }
+   shuffle(opts);
+   for(const {size,path} of opts){
+     const idx=remaining.indexOf(size);
+     remaining.splice(idx,1);path.forEach(j=>left[j]=false);segments.push(path);
+     if(fill(remaining))return true;
+     segments.pop();path.forEach(j=>left[j]=true);remaining.splice(idx,0,size);
+   }
+   return false;
+ }
+ return fill(sizes)?segments:null;
+}
 function buildBoard(cfg){
  const total=cfg.rows*cfg.cols;
  if(cfg.sizes.reduce((a,b)=>a+b,0)!==total)throw Error('Configuración incorrecta');
- // Construcción inversa: cada grupo se agrega sólo si su resultado tiene
- // exactamente un recorrido en el tablero parcial. Luego se juega al revés.
- for(let attempt=0;attempt<500;attempt++){
-   const path=mixedPath(cfg.rows,cfg.cols),sizes=shuffle([...cfg.sizes]);
+ for(let attempt=0;attempt<300;attempt++){
+   const segments=straightSegments(cfg);
+   if(!segments)continue;
+   shuffle(segments);
    const cells=Array(total).fill(null),groups=[],usedValues=new Set();
-   let pos=0,segments=[];
-   for(const size of sizes){segments.push(path.slice(pos,pos+size));pos+=size}
    let valid=true;
    for(const indices of segments){
      const size=indices.length;
@@ -123,12 +168,9 @@ function buildBoard(cfg){
      let chosen=null;
      for(const value of values){
        if(usedValues.has(value))continue;
-       const digits=String(value);
-       digits.split('').forEach((digit,i)=>cells[indices[i]]=digit);
+       String(value).split('').forEach((digit,i)=>cells[indices[i]]=digit);
        const found=countRoutes(cells,value,cfg.cols);
-       if(found.count===1&&found.path.every((p,k)=>p===indices[k])){
-         chosen=value;break;
-       }
+       if(found.count===1&&found.path.every((p,k)=>p===indices[k])){chosen=value;break}
        indices.forEach(p=>cells[p]=null);
      }
      if(chosen===null){valid=false;break}
@@ -137,11 +179,11 @@ function buildBoard(cfg){
    }
    if(valid)return {cells,groups:groups.reverse()};
  }
- throw Error('No fue posible generar un tablero sin respuestas ambiguas. Intenta otra partida.');
+ throw Error('No se pudo generar el tablero. Pulsa Nueva partida.');
 }
 function stopTimer(){if(timer!==null){clearInterval(timer);timer=null}if(elapsedTimer!==null){clearInterval(elapsedTimer);elapsedTimer=null}}
 function newGame(){
- stopTimer();paused=false;elapsed=0;$('pause').textContent='⏸ Pausar';
+ stopTimer();gameSerial++;paused=false;elapsed=0;dragging=false;locked=false;selection=[];$('pause').textContent='⏸ Pausar';
  rand=mode==='daily'?randomSeed(hash(dayKey()+level)):Math.random;
  const cfg=configs[level];let board;
  try{board=buildBoard(cfg)}catch(err){message(err.message,'error');return}
@@ -151,11 +193,83 @@ function newGame(){
  elapsedTimer=setInterval(()=>{if(game&&!game.finished&&!paused)elapsed++},1000);
  if(mode==='timed')timer=setInterval(()=>{if(!game||game.finished||paused)return;game.seconds--;updateStats();if(game.seconds<=0)endGame(false,'⏰ Se acabó el tiempo. ¡Inténtalo de nuevo!')},1000);
 }
-function adjacent(a,b){let c=configs[level].cols;return a!==b&&Math.abs(Math.floor(a/c)-Math.floor(b/c))<=1&&Math.abs(a%c-b%c)<=1}function endGame(won,msg){game.finished=true;paused=false;$('pause').textContent='⏸ Pausar';game.won=won;stopTimer();if(won){game.score+=200;saveStats();if(game.score>getRecord())saveRecord(game.score);play('win')}message(msg,won?'win':'error');render()}
-function select(i){if(game.finished||paused||game.cells[i]===null)return;if(selection.includes(i)){if(selection[selection.length-1]===i){selection.pop();render()}return}if(selection.length&&!adjacent(selection[selection.length-1],i)){message('Selecciona una casilla vecina.','error');return}let target=game.groups[game.groupIndex];if(selection.length>=target.indices.length)return;selection.push(i);hinted=[];render();if(selection.length===target.indices.length){let value=Number(selection.map(j=>game.cells[j]).join(''));if(value===target.value){selection.forEach(j=>game.cells[j]=null);game.streak++;game.score+=(target.indices.length===3?150:100)+Math.min(50,(game.streak-1)*10);game.groupIndex++;selection=[];if(game.groupIndex===game.groups.length)endGame(true,'🏆 ¡Tablero completo! Bono de 200 puntos.');else{play();message('✓ ¡Correcto! Continúa con la siguiente operación.','win');render()}}else{game.score=Math.max(0,game.score-15);game.errors++;game.streak=0;selection=[];if(mode==='survival'){game.lives--;if(game.lives<=0){endGame(false,'💔 Te quedaste sin vidas. ¡Vuelve a intentarlo!');return}}message(mode==='survival'?'Respuesta incorrecta: pierdes una vida.':'Respuesta incorrecta (−15 puntos).','error');render()}}}
+function adjacent(a,b){let c=configs[level].cols;return a!==b&&Math.abs(Math.floor(a/c)-Math.floor(b/c))<=1&&Math.abs(a%c-b%c)<=1}
+function straightPath(path){
+ if(path.length<3)return true;
+ const c=configs[level].cols, a=path[0],b=path[1];
+ const dr=Math.floor(b/c)-Math.floor(a/c),dc=b%c-a%c;
+ return path.every((p,k)=>Math.floor(p/c)===Math.floor(a/c)+dr*k&&p%c===a%c+dc*k);
+}
+function endGame(won,msg){game.finished=true;paused=false;$('pause').textContent='⏸ Pausar';game.won=won;stopTimer();if(won){game.score+=200;saveStats();if(game.score>getRecord())saveRecord(game.score);play('win')}message(msg,won?'win':'error');render()}
+function select(i){
+ if(game.finished||paused||locked||game.cells[i]===null)return;
+ if(selection.includes(i))return;
+ if(selection.length&&(!adjacent(selection[selection.length-1],i)||!straightPath([...selection,i])))return;
+ const target=game.groups[game.groupIndex];
+ if(selection.length>=target.indices.length)return;
+ selection.push(i);hinted=[];drawSelection();
+}
+function finishSelection(){
+ if(game.finished||paused||locked||!selection.length)return;
+ const target=game.groups[game.groupIndex];
+ if(selection.length!==target.indices.length){selection=[];drawSelection();return}
+ const value=Number(selection.map(j=>game.cells[j]).join(''));
+ if(value===target.value){
+   locked=true;play();message('✓ ¡Correcto!','win');drawSelection(true);
+   const indices=[...selection],serial=gameSerial;
+   setTimeout(()=>{
+     if(serial!==gameSerial)return;
+     indices.forEach(j=>game.cells[j]=null);
+     game.streak++;game.score+=(indices.length===3?150:100)+Math.min(50,(game.streak-1)*10);
+     game.groupIndex++;selection=[];locked=false;
+     if(game.groupIndex===game.groups.length)endGame(true,'🏆 ¡Tablero completo! Bono de 200 puntos.');
+     else{message('¡Muy bien! Encuentra la siguiente respuesta.','win');render()}
+   },1000);
+ }else{
+   game.score=Math.max(0,game.score-15);game.errors++;game.streak=0;selection=[];
+   if(mode==='survival'){game.lives--;if(game.lives<=0){endGame(false,'💔 Te quedaste sin vidas.');return}}
+   message('Respuesta incorrecta (−15 puntos).','error');render();
+ }
+}
+function drawSelection(correct=false){
+ const board=$('board'),svg=$('trace');if(!svg)return;
+ const rect=board.getBoundingClientRect();
+ const points=selection.map(i=>{
+   const cell=board.querySelector(`[data-index="${i}"]`);if(!cell)return null;
+   const r=cell.getBoundingClientRect();return [r.left+r.width/2-rect.left,r.top+r.height/2-rect.top];
+ }).filter(Boolean);
+ svg.setAttribute('viewBox',`0 0 ${rect.width} ${rect.height}`);
+ svg.innerHTML=points.length?`<polyline points="${points.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${correct?'#76f3b2':'#f3ca74'}" stroke-width="${Math.max(7,rect.width/48)}" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>`:'';
+ board.querySelectorAll('.cell').forEach((cell,i)=>cell.classList.toggle('selected',selection.includes(i)));
+ $('answer').textContent='Tu respuesta: '+(selection.length?selection.map(i=>game.cells[i]).join(''):'—');
+}
+function indexAt(x,y){
+ const el=document.elementFromPoint(x,y);
+ const cell=el?.closest?.('.cell');
+ return cell&&$('board').contains(cell)?Number(cell.dataset.index):null;
+}
+function dragTo(x,y){const i=indexAt(x,y);if(i!==null)select(i)}
 function saveStats(){try{let k='sopa-v5-stats-'+level+'-'+mode;let st=JSON.parse(localStorage.getItem(k)||'{"wins":0,"bestSeconds":null}');st.wins=(st.wins||0)+1;st.bestSeconds=st.bestSeconds==null?elapsed:Math.min(st.bestSeconds,elapsed);localStorage.setItem(k,JSON.stringify(st))}catch{}}
 function statsText(){try{let st=JSON.parse(localStorage.getItem('sopa-v5-stats-'+level+'-'+mode)||'{}');return `Partidas completadas: ${st.wins||0}. Mejor tiempo: ${st.bestSeconds==null?'—':Math.floor(st.bestSeconds/60)+'m '+st.bestSeconds%60+'s'}.` }catch{return 'Las estadísticas se guardan en este navegador.'}}
 function message(s,cls=''){$('message').textContent=s;$('message').className=cls}function updateStats(){$('score').textContent=game.score;$('remaining').textContent=game.cells.filter(v=>v!==null).length;$('record').textContent=getRecord();$('extra-label').textContent=mode==='timed'?'Tiempo':mode==='survival'?'Vidas':mode==='daily'?'Modo':'Tiempo';$('extra').textContent=mode==='timed'?`${Math.floor(game.seconds/60)}:${String(game.seconds%60).padStart(2,'0')}`:mode==='survival'?'❤️'.repeat(game.lives):mode==='daily'?'📅':'∞'}
-function render(){let cfg=configs[level];updateStats();let pct=Math.round(100*game.groupIndex/game.groups.length);$('progress').style.width=pct+'%';$('progressbox').setAttribute('aria-valuenow',String(pct));$('progress-label').textContent=pct+'% completado';$('streak').textContent='🔥 Racha: '+game.streak;$('stats-summary').textContent=statsText();$('problem').textContent=game.finished?(game.won?'¡Ganaste! 🎉':'Fin del juego'):game.groups[game.groupIndex].op;$('answer').textContent=game.finished?(game.won?'¡Todas las casillas eliminadas!':'Pulsa Nueva partida para reintentar'):'Tu respuesta: '+(selection.length?selection.map(i=>game.cells[i]).join(''):'—');$('board').style.gridTemplateColumns=`repeat(${cfg.cols},minmax(0,1fr))`;$('board').replaceChildren(...game.cells.map((v,i)=>{let b=document.createElement('button');b.type='button';b.className='cell'+(v===null?' empty':'')+(selection.includes(i)?' selected':'')+(hinted.includes(i)?' hint':'');b.textContent=v===null?'':v;b.disabled=v===null||game.finished||paused;b.setAttribute('aria-label',v===null?'Vacío':`Dígito ${v}, fila ${Math.floor(i/cfg.cols)+1}, columna ${i%cfg.cols+1}`);b.addEventListener('click',()=>select(i));return b}));$('hint').disabled=game.finished||paused;$('clear').disabled=game.finished||paused;$('pause').disabled=game.finished||mode!=='timed'}
-document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{level=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('active',x===b));newGame()}));document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));newGame()}));$('restart').addEventListener('click',newGame);$('clear').addEventListener('click',()=>{selection=[];hinted=[];render();message('Selección borrada.')});$('hint').addEventListener('click',()=>{if(game.finished||paused)return;game.hints++;game.streak=0;game.score=Math.max(0,game.score-20);selection=[];hinted=[...game.groups[game.groupIndex].indices];render();message('Pista: casillas resaltadas (−20 puntos).')});$('pause').addEventListener('click',()=>{if(mode!=='timed'||game.finished)return;paused=!paused;$('pause').textContent=paused?'▶ Reanudar':'⏸ Pausar';render();message(paused?'⏸ Juego en pausa.':'▶ ¡Continúa jugando!')});$('help').addEventListener('click',()=>{$('help-panel').classList.toggle('hidden');$('stats-summary').textContent=statsText()});$('sound').addEventListener('click' ,()=>{soundOn=!soundOn;saveSound();updateSound();if(soundOn)play()});newGame();})();
+function render(){let cfg=configs[level];updateStats();let pct=Math.round(100*game.groupIndex/game.groups.length);$('progress').style.width=pct+'%';$('progressbox').setAttribute('aria-valuenow',String(pct));$('progress-label').textContent=pct+'% completado';$('streak').textContent='🔥 Racha: '+game.streak;$('stats-summary').textContent=statsText();$('problem').textContent=game.finished?(game.won?'¡Ganaste! 🎉':'Fin del juego'):game.groups[game.groupIndex].op;$('answer').textContent=game.finished?(game.won?'¡Todas las casillas eliminadas!':'Pulsa Nueva partida para reintentar'):'Tu respuesta: '+(selection.length?selection.map(i=>game.cells[i]).join(''):'—');$('board').style.gridTemplateColumns=`repeat(${cfg.cols},minmax(0,1fr))`;$('board').replaceChildren(...game.cells.map((v,i)=>{let b=document.createElement('button');b.type='button';b.dataset.index=String(i);b.className='cell'+(v===null?' empty':'')+(selection.includes(i)?' selected':'')+(hinted.includes(i)?' hint':'');b.textContent=v===null?'':v;b.disabled=v===null||game.finished||paused;b.setAttribute('aria-label',v===null?'Vacío':`Dígito ${v}, fila ${Math.floor(i/cfg.cols)+1}, columna ${i%cfg.cols+1}`);return b}));const trace=document.createElementNS('http://www.w3.org/2000/svg','svg');trace.id='trace';trace.setAttribute('aria-hidden','true');$('board').append(trace);drawSelection(locked);$('hint').disabled=game.finished||paused;$('clear').disabled=game.finished||paused;$('pause').disabled=game.finished||mode!=='timed'}
+document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{level=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.classList.toggle('active',x===b));newGame()}));document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));newGame()}));$('restart').addEventListener('click',newGame);
+$('board').addEventListener('pointerdown',e=>{
+ if(game.finished||paused||locked||dragging)return;
+ const i=indexAt(e.clientX,e.clientY);if(i===null||game.cells[i]===null)return;
+ e.preventDefault();dragging=true;dragPointer=e.pointerId;selection=[];
+ $('board').setPointerCapture(e.pointerId);select(i);
+});
+$('board').addEventListener('pointermove',e=>{
+ if(!dragging||e.pointerId!==dragPointer)return;
+ e.preventDefault();dragTo(e.clientX,e.clientY);
+});
+function releaseDrag(e){
+ if(!dragging||e.pointerId!==dragPointer)return;
+ dragging=false;dragPointer=null;
+ if(e.type==='pointerup')finishSelection();else{selection=[];drawSelection()}
+}
+$('board').addEventListener('pointerup',releaseDrag);
+$('board').addEventListener('pointercancel',releaseDrag);
+$('clear').addEventListener('click',()=>{selection=[];hinted=[];render();message('Selección borrada.')});$('hint').addEventListener('click',()=>{if(game.finished||paused)return;game.hints++;game.streak=0;game.score=Math.max(0,game.score-20);selection=[];hinted=[...game.groups[game.groupIndex].indices];render();message('Pista: casillas resaltadas (−20 puntos).')});$('pause').addEventListener('click',()=>{if(mode!=='timed'||game.finished)return;paused=!paused;$('pause').textContent=paused?'▶ Reanudar':'⏸ Pausar';render();message(paused?'⏸ Juego en pausa.':'▶ ¡Continúa jugando!')});$('help').addEventListener('click',()=>{$('help-panel').classList.toggle('hidden');$('stats-summary').textContent=statsText()});$('sound').addEventListener('click' ,()=>{soundOn=!soundOn;saveSound();updateSound();if(soundOn)play()});newGame();})();
 </script></body></html>
